@@ -8,5 +8,5 @@ device=All
 author=wahyu6070
 description=Optimizing your android device using Ai
 typeinstall=auto
-updateJson=https://raw.githubusercontent.com/litegapps/litegapps-controller/main/update.json
-support=https://litegapps.github.io
+updateJson=https://github.com/wahyu6070/zhyper/raw/main/update.json
+
