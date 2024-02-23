@@ -1,0 +1,12 @@
+id=zhyper
+name=Zhyper Ai Premium
+version=v1
+versionCode=1
+minsdk=25
+date=15-02-2024
+device=All
+author=wahyu6070
+description=Optimizing your android device using Ai
+typeinstall=auto
+updateJson=https://raw.githubusercontent.com/litegapps/litegapps-controller/main/update.json
+support=https://litegapps.github.io
