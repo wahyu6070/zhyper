@@ -1,9 +1,11 @@
 #!/system/bin/sh
 #zhyper
 # by wahyu6070
-sleep 25s
 MODDIR=${0%/*}
+
+sleep 50s
 BASE=/sdcard/Android/zhyper
+DATA=$BASE/data
 LOG=$BASE/zhyper.log
 
 
@@ -95,7 +97,15 @@ done
 esac
 
 
+if [ "$(getprop init.svc.logd)" = running ]; then
+stop logd
+fi
 
+if [ "$(getprop init.svc.statsd)" = running ]; then
+stop statsd
+fi
 
+#remove reboot file create by controller
+rm -rf $DATA/reboot
 
 

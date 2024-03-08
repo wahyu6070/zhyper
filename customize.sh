@@ -2,7 +2,7 @@
 # By wahyu6070
 
 BASE=/data/media/0/Android/zhyper
-BIN=$MODPATH/bin
+BIN=$MODPATH/bin/$ARCH
 chmod 755 $MODPATH/bin/litegapps-functions
 #litegapps functions
 . $MODPATH/bin/litegapps-functions
@@ -60,11 +60,11 @@ mktouch $MODPATH/system/etc/htop/htoprc
 #permissions
 chmod -R 755 $MODPATH/system/bin
 
-cp -f $MODPATH/bin/a.sh /data/adb/post-fs-data.d/zhyper.sh
+cp -pf $MODPATH/bin/a.sh /data/adb/post-fs-data.d/zhyper.sh
 chmod 755 /data/adb/post-fs-data.d/zhyper.sh
 
-cp -f $MODPATH/bin/b.sh /data/adb/service.d/zhyper.sh
-chmod 755 /data/adb/service.d/zhyper.sh
+cp -pf $MODPATH/bin/b.sh $MODPATH/service.sh
+chmod 755 $MODPATH/service.sh
 
 LIST_TMP="
 $MODPATH/curl

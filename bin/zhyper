@@ -6,6 +6,7 @@
 #if you copy some code here please permission to the owner
 #
 NAME=Zhyper
+ABOUT_LINK=https://wahyu6070.github.io/android/zhyper
 propversion=v1.1
 propcode=11
 propdate=15-02-2024
@@ -98,6 +99,35 @@ print_true(){
 print_false(){
 	print "${GREEN}${1} = ${WHITE}${2}${GREEN}"
 	}
+app_true(){
+	
+	pm list packages | grep -q $1
+	if [ $? -eq "0" ]; then
+	return 0
+	else
+	return 1
+	fi
+	
+	}
+OPEN_LINK(){
+	local ads_link=$1
+	
+	if $(app_true com.android.chrome); then
+	am start -n com.android.chrome/com.google.android.apps.chrome.Main -a android.intent.action.VIEW -d $ads_link
+	elif $(app_true com.chrome.canary); then
+	am start -n com.chrome.canary/com.google.android.apps.chrome.Main -a android.intent.action.VIEW -d $ads_link
+	elif $(app_true com.chrome.beta); then
+	am start -n com.chrome.beta/com.google.android.apps.chrome.Main -a android.intent.action.VIEW -d $ads_link
+	elif $(app_true com.chrome.dev); then
+	am start -n com.chrome.dev/com.google.android.apps.chrome.Main -a android.intent.action.VIEW -d $ads_link
+	else
+	am start -a android.intent.action.VIEW -d $ads_link
+	fi
+	}
+REBOOT(){
+	touch $DATA/reboot
+	
+	}
 #▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
 # LIST APPS
 #▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
@@ -149,6 +179,9 @@ com.ea.gp.apexlegendsmobilefps
 com.netease.chiji
 com.netease.lztgglobal
 "
+
+
+
 black_func_1(){
 	local BLACK_LIST_GAMING_1=$DATA/black_list_gaming1
 	if [ -f $DATA/black_list_gaming1 ]; then
@@ -868,7 +901,7 @@ addon_change_device_prop(){
 		local BRAND=`GETPROP ro.product.vendor.brand $NAME_F`
 		local MANUFACTUR=`GETPROP ro.product.vendor.manufacturer $NAME_F`
 		local MARKETNAME=`GETPROP ro.product.vendor.model $NAME_F`
-		local MODEL=`GETPROP ro.product.vendor.device $NAME_F`
+		local MODEL=`GETPROP ro.product.vendor.model $NAME_F`
 		local CODENAME=`GETPROP ro.product.vendor.device $NAME_F`
 		local FINGERPRINT=`GETPROP ro.vendor.build.fingerprint $NAME_F`
 		print
@@ -1184,68 +1217,15 @@ GAPPS(){
 	clear
 	printmid "${C}Litegapps Tweaks${G}"
 	print
-	print " 1. Fix Permissions system files"
-	print " 2. Fix Permissions google apps"
-	print " 3. Fix late notification" 
-	print " 4. Back"
+	print " 1. Fix Notification Delay" 
+	print " 2. Back"
 	print
 	echo -n "  Select Menu : "
 	read perm33
 	case $perm33 in
 		1)
 			clear
-			printmid "Fix Permissions system files"
-			print
-			for iz in $SYSDIR/app $SYSDIR $SYSDIR/product/app $SYSDIR/product/priv-app; do
-				if [ -d $iz ]; then
-				 	find $iz -type f -name *.apk | while read asww; do
-				 		print "${CYAN}set permission $asww"
-				 		chmod 644 $asww
-				 		chcon -h u:object_r:system_file:s0 $asww
-				 		print "${GREEN}set permission $(dirname $asww)"
-				 		chmod 755 $(dirname $asww)
-				 		chcon -h u:object_r:system_file:s0 $(dirname $asww)
-				 	done
-				fi
-		     done
-				
-		     menu_end
-			;;
-		2)
-			clear
-			printmid "Fix Permissions Google Apps"
-			print
-			PACKAGE_LIST_APPS="
-			com.google.android.gms
-			com.android.vending
-			com.google.android.play.games
-			"
-			for WAHYU90 in $PACKAGE_LIST_APPS; do
-			PACKAGE=`getp1 $WAHYU90`
-			print "- ${Y}Set permissions app : $PACKAGE $G"
-			pm grant $PACKAGE_LIST_APPS android.permission.READ_CALENDAR 2>/dev/null
-			pm grant $PACKAGE_LIST_APPS android.permission.READ_CALL_LOG  2>/dev/null
-			pm grant $PACKAGE_LIST_APPS android.permission.ACCESS_FINE_LOCATION 2>/dev/null
-			pm grant $PACKAGE_LIST_APPS android.permission.READ_EXTERNAL_STORAGE 2>/dev/null
-			pm grant $PACKAGE_LIST_APPS android.permission.ACCESS_COARSE_LOCATION 2>/dev/null
-			pm grant $PACKAGE_LIST_APPS android.permission.READ_PHONE_STATE 2>/dev/null
-			pm grant $PACKAGE_LIST_APPS android.permission.SEND_SMS 2>/dev/null
-			pm grant $PACKAGE_LIST_APPS android.permission.CALL_PHONE 2>/dev/null
-			pm grant $PACKAGE_LIST_APPS android.permission.WRITE_CONTACTS 2>/dev/null
-			pm grant $PACKAGE_LIST_APPS android.permission.CAMERA 2>/dev/null
-			pm grant $PACKAGE_LIST_APPS android.permission.WRITE_CALL_LOG 2>/dev/null
-			pm grant $PACKAGE_LIST_APPS android.permission.PROCESS_OUTGOING_CALLS 2>/dev/null
-			pm grant $PACKAGE_LIST_APPS android.permission.GET_ACCOUNTS 2>/dev/null
-			pm grant $PACKAGE_LIST_APPS android.permission.WRITE_EXTERNAL_STORAGE 2>/dev/null
-			pm grant $PACKAGE_LIST_APPS android.permission.RECORD_AUDIO 2>/dev/null
-			pm grant $PACKAGE_LIST_APPS android.permission.ACCESS_MEDIA_LOCATION 2>/dev/null
-			pm grant $PACKAGE_LIST_APPS android.permission.READ_CONTACTS 2>/dev/null
-		done
-		menu_end
-		;;
-		3)
-			clear
-			printmid "Fix Permissions Google Apps"
+			printmid "Fix Notification Delay"
 			print
 			local NUM=$NUM
 			for GF in $(find /data/data -type f -name *gms*); do
@@ -1254,7 +1234,7 @@ GAPPS(){
 			done
 			menu_end
 		;;
-		4)
+		2)
 		break
 			;;
 		*)
@@ -1324,11 +1304,10 @@ mode(){
 	echo normal > $DATA/mode
 	
 	fi
-	
-	
+	REBOOT
 	}
 about(){
-echo
+OPEN_LINK $ABOUT_LINK
 }
 menu(){
 	while true; do
@@ -1387,7 +1366,7 @@ print " Reboot Diperlukan"
 fi
 print " "
 print " "
-print "1.Boost              5.Gapps      ${YELLOW}9.Tweaks${GREEN}"
+print "1.Boost              5.Gapps               ${YELLOW}9.Tweaks${GREEN}"
 print "2.Gaming Mode        6.Memory Info         10.Settings"
 print "${batterystatus}7.Device Info         11.About"
 print "4.Change Mode        8.Add-on              12.Exit"
@@ -1406,7 +1385,7 @@ case $pilih in
 8) addon ;;
 9) TWEAKS ;;
 10) SETTINGS ;;
-11 | about) menu about About ;;
+11 | about) OPEN_LINK $ABOUT_LINK;;
 12 | exit | e)  
 print " $WHITE "
 break 
@@ -1414,3 +1393,4 @@ break
 *) error "Invalid selection" ; sleep 2s ;;
 esac
 done
+
